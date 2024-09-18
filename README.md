@@ -17,12 +17,15 @@ If you have pdf files that have been affected by this bug, you can use ```pdf2do
 The latest stable version of ```pdf-renamer``` is the **1.1**. See [here](https://github.com/MicheleCotrufo/pdf-renamer/releases) for the full change log.
 
 ## Table of Contents
- - [Description](#description)
- - [Installation](#installation)
- - [Usage](#usage)
- - [Installing the shortcuts in the right-click context menu of Windows](#installing-the-shortcuts-in-the-right-click-context-menu-of-windows)
+- [pdf-renamer](#pdf-renamer)
+  - [Warning](#warning)
+  - [Latest stable version](#latest-stable-version)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Description](#description)
+  - [Usage](#usage)
   - [Contributing](#contributing)
- - [License](#license)
+  - [License](#license)
 
 ## Installation
 Use the package manager pip to install ```pdf-renamer```.
@@ -83,9 +86,13 @@ options:
                         {Aall}          =        Last name of all authors (separated by comma)
                         {Aetal}         =        Last name of the first author, add 'et al.' if more authors are present
                         {A3etal}        =        Last name of the first three authors (separated by comma), add 'et al.' if more authors are present
+                        {A}             =        Last name of the first author
+                        {A3}            =        Last name of the first three authors (separated by comma)
                         {aAall}         =        First initial and last name of all authors (separated by comma)
                         {aAetal}        =        First initial and last name of the first author, add 'et al.' if more authors are present
                         {aA3etal}       =        First initial and last name of the first three authors (separated by comma), add 'et al.' if more authors are present
+                        {aA}            =        First initial and last name of the first author
+                        {aA3}           =        First initial and last name of the first three authors (separated by comma)
                         {T}             =        Title
   -sf, --sub_folders    Rename also pdf files contained in subfolders of target folder. Default = "False".
   -max_length_authors MAX_LENGTH_AUTHORS

@@ -17,10 +17,14 @@ AllowedTags = {"{YYYY}":" \t\t=\t Year of publication",
                 "{J}":" \t\t=\t Full name of Journal",
                 "{Jabbr}":" \t=\t Abbreviated name of Journal, if any available (otherwise full name is used)",
                 "{Aall}":" \t\t=\t Last name of all authors (separated by comma)",
+                "{A}":" \t=\t Last name of the first author",
                 "{Aetal}":" \t=\t Last name of the first author, add \'et al.\' if more authors are present",
+                "{A3}":" \t=\t Last name of the first three authors (separated by comma)",
                 "{A3etal}":" \t=\t Last name of the first three authors (separated by comma), add \'et al.\' if more authors are present",
                 "{aAall}":" \t=\t First initial and last name of all authors (separated by comma)",
+                "{aA}":" \t=\t First initial and last name of the first author",
                 "{aAetal}":" \t=\t First initial and last name of the first author, add \'et al.\' if more authors are present",
+                "{aA3}":" \t=\t First initial and last name of the first three authors (separated by comma)",
                 "{aA3etal}":" \t=\t First initial and last name of the first three authors (separated by comma), add \'et al.\' if more authors are present",
                 "{T}":" \t\t=\t Title"
                 #"{Tcamel}":" \t=\t Title in camel case (e.g., LoremIpsumDolorSitAmet)",
@@ -218,7 +222,8 @@ def build_filename(infos,   format = None, tags=None):
     if 'authors' in infos.keys() and len(infos['authors'])>len(author_info):
         author_info = infos['authors']
     
-    ListAuthorTags = ['{Aall}','{A3etal}','{Aetal}','{aAall}','{aA3etal}','{aAetal}']
+    ListAuthorTags = ['{Aall}','{A3etal}','{Aetal}','{aAall}','{aA3etal}','{aAetal}',
+                      '{A3}','{A}','{aA3}','{aA}']
     if any(item in rep_dict.keys() for item in ListAuthorTags): #Chec if any of the tag chosen by the user is one of the author tags defined in ListAuthorTags
         if author_info:
             # The variable author_info comes from the metadata genereated by pdf2bib, and its type/value depend on how the metadata was retrieved.
@@ -235,9 +240,13 @@ def build_filename(infos,   format = None, tags=None):
             if lastnames:                                                                                        
                 rep_dict['{Aall}'] = ", ".join(lastnames)
                 rep_dict['{A3etal}'] = ", ".join(lastnames[0:3])
+                rep_dict['{Aetal}'] = lastnames[0]
+                rep_dict['{A}'] =  lastnames[0]
+                rep_dict['{A3}'] = ", ".join(lastnames[0:3])
                 if len(lastnames)>3:
-                    rep_dict['{A3etal}'] = rep_dict['{A3etal}'] + " et al."
-                rep_dict['{Aetal}'] = lastnames[0] + (" et al." if len(lastnames)>1 else "")
+                    rep_dict['{A3etal}'] += " et al."
+                if len(lastnames)>1:
+                    rep_dict['{Aetal}'] += " et al."
 
                 if firstnames: 
                     firstinitials = [firstname[0][0].upper()+"."  if len(firstname[0])>0 else "" for firstname in firstnames]
@@ -245,13 +254,19 @@ def build_filename(infos,   format = None, tags=None):
   
                     rep_dict['{aAall}'] = ", ".join(firstinitial_lastnames)
                     rep_dict['{aA3etal}'] = ", ".join(firstinitial_lastnames[0:3])
+                    rep_dict['{aAetal}'] = firstinitial_lastnames[0]
+                    rep_dict['{aA}'] = firstinitial_lastnames[0]
+                    rep_dict['{aA3}'] = ", ".join(lastnames[0:3])
                     if len(firstinitial_lastnames)>3:
-                        rep_dict['{aA3etal}'] = rep_dict['{aA3etal}'] + " et al."
-                    rep_dict['{aAetal}'] = firstinitial_lastnames[0] + (" et al." if len(firstinitial_lastnames)>1 else "")
+                        rep_dict['{aA3etal}'] += " et al."
+                    if len(firstinitial_lastnames)>1:
+                        rep_dict['{aAetal}'] += " et al."
                 else:
                     rep_dict['{aAall}'] = rep_dict['{Aall}']
                     rep_dict['{aA3etal}'] = rep_dict['{A3etal}']
                     rep_dict['{aAetal}'] = rep_dict['{Aetal}']
+                    rep_dict['{aA}'] = rep_dict['{A}']
+                    rep_dict['{aA3}'] =rep_dict['{A3}']
             else:
                 for tag in ListAuthorTags:
                     rep_dict[tag] = '[NoAuthor]'
